@@ -1,0 +1,571 @@
+From daniel at gultsch.de  Wed May 10 17:01:56 2006
+From: daniel at gultsch.de (Daniel Gultsch)
+Date: Wed, 10 May 2006 17:01:56 +0200
+Subject: [Jabberfriends-developer] Mailingliste auf Deutsch
+Message-ID: <44620064.2010902@gultsch.de>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Hi,
+wir werden diese Mailingliste auf Deutsch halten. Da wir im Moment nur
+deutsche Programmierer (und Benutzer) haben ist dies, denke ich, OK.
+
+Sobald Englischsprachige Benutzer joinen, k?nnen wir immer noch auf
+Englisch umstellen.
+
+Gru? Daniel
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+
+iD8DBQFEYgBkk7+UCPW7+jARAnvvAJ9peewivkzVQpxkYbztTzUoMDVjlwCeOmms
+cMZlSVMjoDZ+0Kkbu86B7jI=
+=0xfO
+-----END PGP SIGNATURE-----
+
+
+From mastergnome at googlemail.com  Wed May 17 18:54:45 2006
+From: mastergnome at googlemail.com (Falco Vennedey)
+Date: Wed, 17 May 2006 18:54:45 +0200
+Subject: [Jabberfriends-developer] Meine =?ISO-8859-15?Q?Verbesserungsvorschl=E4ge?=
+Message-ID: <446B5555.2050700@googlemail.com>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Hiho!
+
+Ich habe mal die Quellcodes ein wenig ?berflogen. Mir sind da so ein
+paar Dinge aufgefallen die evt. besser gemacht werden k?nnten. Versteht
+das bitte nicht falsch, ich m?chte hier nicht als Besserwisser auftreten
+oder sagen das hier jemand schlecht programmiert - ich m?chte nur dass
+das Projekt von anfang an sauber durchgezogen wird und hinterher alle
+weniger Arbeit bei der Wartung haben.
+
+Meine Verbesserungsvorschl?ge
+=============================
+
+Ich bin der Meinung dass man gerade in einer so Fehlertr?chtigen Sprache
+wie PHP alles tun sollte um Fehler aufzudecken. Daher bin ich daf?r dass
+alle mit der Einstellung error_reporting=E_ALL hacken sollten. Was mir
+beispielsweise beim ?berfliegen des Quelltextes der Datei
+"changedetails.php" aufgefallen ist, das z.B. in Zeile 30 aus $birthday
+pl?tzlich $birtday wird - sowas muss auch getestet werden um Fehler
+aufzudecken.
+
+Was mich erst stark ins Stuzen gebracht hat war folgende Zeile (Z. 15 in
+wiki.php): $id = $id + 0;
+Ich denke mal dass damit eine Typenumwandlung von String zu int erfolgen
+sollte. PHP bietet daf?r doch extra Funktionen an um so etwas
+durchzuziehen. Eine gute M?glichkeit ist z.B.: $id =
+intval(ereg_replace('[^0-9]','',$_GET['id']));
+Ich denke das dies wesentlich besser ist als etwas mit 0 zu addieren :D
+
+Was mir auch ziemlich schnell ins Auge fiel ist dass ihr um Teile von
+Strings zu ermitteln den Verkettungsoperator . mit den jeweiligen
+Indizes des Strings einsetzt. Ich versteh das nicht so ganz weil der
+Funktionsumfang von PHP extra die Funktion substr() f?r so etwas hat.
+Ich w?rde euch ans Herz legen diese Funktion zu benutzen.
+
+Des weiteren wurden mal "Doppelte Anf?hrungszeichen" und mal 'Einfache
+Anf?hrungszeichen' benutzt. Ich denke dass wir und auf eine Form einigen
+und diese konsequent durchziehen sollten. Ich pers?nlich w?rde die
+Einfachen bevorzugen, da diese performanter und durchsichtiger sind was
+die intigration von Variablen angeht.
+
+Wenn gepr?ft wird ob eine Variable leer ist wird von euch das Konstrukt
+if($x=="") verwendet. Das ist unpraktisch und langsam. PHP stellt daf?r
+die Funktion empty() zur Verf?gung welche ich euch auch ans Herz legen
+m?chte.
+
+Eine Kleinigkeit, aus der aber bei vielen Schleifen sehr schnell zu
+Performanceeinbu?en f?hren kann: Ihr benutzt Postinkrement-, bzw.
+Postdekrementoperatorn ($i++, $i--). Der Preinkrement, bzw.
+Predekrementoperator (++$i, --$i) ist aber ein wenig schneller - zwar
+nur wenig aber schneller :-)
+
+Speedm??ig ist auch noch die Verwendung von Kurzoperatoren anzuraten,
+also $x .= $y; anstelle von $x = $x.$y; - das gleiche mit +=, -= usw.
+Das ist schneller und macht den Code ?bersichtlicher.
+
+Besonders aus Speedgr?nden sollten Objekte als Referenzen erzeugt
+werden, da sonst bei jedem Aufruf von $this das komplette Objekt kopiert
+wird, was zu einen enormen Overhead f?hrt. Referenzen werden mit =&
+angelegt.
+
+Bei den if() Konstrukten wo nur eine Anweisung hinter folgt k?nnen die
+Blockklammern auch weggelassen werden. Das macht den Code wesendlich
+?bersichtlicher und man sollte diesen Luxus auch nutzen, denn in Perl
+hat man den z.B. nicht, dort m?ssen {} gesetzt werden und der Code wird
+unleserlich.
+
+Die Benennung von Variablen sollte von vorn herein durchdacht werden.
+Warum hei?t z.B. eine Variable welche die MySQL Datenbank beinhaltet
+$config['mysql_table'] und nicht $config['mysql_db'] o.?.?
+
+
+Evt. sollte sich der ein oder andere nochmal das Ziel von OOP vor Augen
+f?hren. Ich Versteh nicht warum z.B. in der Datei jforg_template.php in
+den Zeilen 56 und 57 auf die Funktion str_replace() zugegriffen wird, wo
+diese doch l?ngst in der Methode replace() der Klasse gekapselt wurde.
+So wird der Code nur immer unwartbarer und das m?chte denke ich keiner
+von uns :)
+
+Was OOP angeht sollte sowieso nochmal alles ein wenig durchdacht werden.
+Da ich bereits ziemlich viele MySQL Funktionsaufrufe und
+Datumsfunktionsaufrufe gesehen habe denke ich das eine eigene MySQL bzw.
+Datumsklasse doch schon viel Sinn hat. So l?sst sich beispielsweise in
+der MySQL Klasse noch eine Methode implementieren, welche vor
+SQL-injection Angriffen sch?tzt. Ich f?nde das viel viel ?bersichtlicher
+und wesentlich besser gel?st als jedesmal auf die globalen Funktionen
+erneut zuzugeifen.
+
+Die Ordnerf?hrung ist meines Erachtens auch ein wenig irref?hrend: Warum
+gibt es den Ordner Design welcher nur das Template enth?lt und nochmal
+extra den Ordner GFX. Hat GFX nix mit Design zu tun? Ich f?nde GFX in
+Design besser aufgehoben. Generell bin ich der Ansicht dass das Design
+noch nicht optimal vom Code getrennt ist. Wenn jemand von euch mal z.B.
+mit Smarty als Templateengine gearbeitet hat weis er genau was ich
+meine. Ich denke dass dieser Punkt nochmals genau durchdacht werden
+sollte, auch wenn dadurch bis jetzt geschriebene Klassen evt. verworfen
+werden m?ssen ist es doch ein Entscheidener Punkt. Das gleiche gilt f?r
+die Modularisierung der Texte vom Rest der Seite. So lassen sich die
+Texte besser verwalten. Ich schlage hier anstelle einer DB-Tabelle ein
+XML-File vor, da dieses f?r solche Aufgaben wesentlich flexiebler ist.
+Das Linkmanagement sollte auch nochmal ?berholt werden, so dass keine
+festen Linkadressen im Code konstant hinterlegt werden, dies hat auch
+eine bessere Wartbarkeit zur Folge.
+
+Was ich Ordnerf?hrungstechnisch auch noch nicht so 100% perfekt finde
+ist die Tatsache, dass in dem Ordner classes nicht nur Klassen sondern
+auch globale Funktionen liegen. Dies sollte evt. auch nochmal ?berdacht
+werden.
+
+Dann noch ein letzter Punkt der noch konkret die GUI betrifft: Ich f?nde
+es besser wenn der User die M?glichkeit hat seinen PGP-Key mittels eines
+Dateiuploads hochzuladen. Das ist etwas Userfreundlicher.
+
+
+So, ich hoffe ihr versteht meine Kritikpunkte, - was haltet ihr von
+meinen Vorschl?gen?
+
+MFG Zwerg
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+
+iD8DBQFEa1VVPnKv6Cf+e6ARAt7RAKDOK5D9CZQzClqVRhvjVxFKvOC2vACguxkM
+0gAV5lPar2bFo5CGNDaBOnk=
+=vnxq
+-----END PGP SIGNATURE-----
+
+
+From daniel at gultsch.de  Wed May 17 21:28:35 2006
+From: daniel at gultsch.de (Daniel Gultsch)
+Date: Wed, 17 May 2006 21:28:35 +0200
+Subject: [Jabberfriends-developer] Meine =?ISO-8859-15?Q?Verbesserung?=
+ =?ISO-8859-15?Q?svorschl=E4ge?=
+In-Reply-To: <446B5555.2050700@googlemail.com>
+References: <446B5555.2050700@googlemail.com>
+Message-ID: <446B7963.3080201@gultsch.de>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Achja, noch mal an die Mailingliste (ich war verpeilt)
+
+Falco Vennedey schrieb:
+> Hiho!
+>
+> Ich habe mal die Quellcodes ein wenig ?berflogen. Mir sind da so ein
+> paar Dinge aufgefallen die evt. besser gemacht werden k?nnten. Versteht
+> das bitte nicht falsch, ich m?chte hier nicht als Besserwisser auftreten
+> oder sagen das hier jemand schlecht programmiert - ich m?chte nur dass
+> das Projekt von anfang an sauber durchgezogen wird und hinterher alle
+> weniger Arbeit bei der Wartung haben.
+Es versteht dich keiner falsch. Es ist sch?n, das du mich (uns) auf
+Fehler aufmerksam machst.
+>
+> Meine Verbesserungsvorschl?ge
+> =============================
+>
+> Ich bin der Meinung dass man gerade in einer so Fehlertr?chtigen Sprache
+> wie PHP alles tun sollte um Fehler aufzudecken. Daher bin ich daf?r dass
+> alle mit der Einstellung error_reporting=E_ALL hacken sollten. Was mir
+> beispielsweise beim ?berfliegen des Quelltextes der Datei
+> "changedetails.php" aufgefallen ist, das z.B. in Zeile 30 aus $birthday
+> pl?tzlich $birtday wird - sowas muss auch getestet werden um Fehler
+> aufzudecken.
+error_reporting=E_ALL ist eine gute Idee - wie das mit $birthday
+zustande kam weis ich nicht. Es war wohl sp?t ;-)
+>
+> Was mich erst stark ins Stuzen gebracht hat war folgende Zeile (Z. 15 in
+> wiki.php): $id = $id + 0;
+> Ich denke mal dass damit eine Typenumwandlung von String zu int erfolgen
+> sollte. PHP bietet daf?r doch extra Funktionen an um so etwas
+> durchzuziehen. Eine gute M?glichkeit ist z.B.: $id =
+> intval(ereg_replace('[^0-9]','',$_GET['id']));
+> Ich denke das dies wesentlich besser ist als etwas mit 0 zu addieren :D
+War irgendwie ein dummer Hack... ich hatte auf Anhieb keine Funktion wie
+to_int() oder so gefunden.
+>
+> Was mir auch ziemlich schnell ins Auge fiel ist dass ihr um Teile von
+> Strings zu ermitteln den Verkettungsoperator . mit den jeweiligen
+> Indizes des Strings einsetzt. Ich versteh das nicht so ganz weil der
+> Funktionsumfang von PHP extra die Funktion substr() f?r so etwas hat.
+> Ich w?rde euch ans Herz legen diese Funktion zu benutzen.
+Mhh... ich hab's so gelernt...
+>
+> Des weiteren wurden mal "Doppelte Anf?hrungszeichen" und mal 'Einfache
+> Anf?hrungszeichen' benutzt. Ich denke dass wir und auf eine Form einigen
+> und diese konsequent durchziehen sollten. Ich pers?nlich w?rde die
+> Einfachen bevorzugen, da diese performanter und durchsichtiger sind was
+> die intigration von Variablen angeht.
+Das Doppelte Anf?hrungszeichen langsam sind, wei? ich mitlerweile auch.
+Die Stellen, an denen sie noch sind, sind entweder ziemlich alt, oder
+nicht von mir. In Zukunft einigen wir uns also auf Einfache.
+>
+> Wenn gepr?ft wird ob eine Variable leer ist wird von euch das Konstrukt
+> if($x=="") verwendet. Das ist unpraktisch und langsam. PHP stellt daf?r
+> die Funktion empty() zur Verf?gung welche ich euch auch ans Herz legen
+> m?chte.
+Wieder etwas, was ich einmal gelernt habe, und nie wieder hinterfragt
+habe. Nett, das du mich darauf hinweist.
+>
+> Eine Kleinigkeit, aus der aber bei vielen Schleifen sehr schnell zu
+> Performanceeinbu?en f?hren kann: Ihr benutzt Postinkrement-, bzw.
+> Postdekrementoperatorn ($i++, $i--). Der Preinkrement, bzw.
+> Predekrementoperator (++$i, --$i) ist aber ein wenig schneller - zwar
+> nur wenig aber schneller :-)
+For-Schleifen? Die gibt's glaube ich nur einmal, oder? Also, wenn das
+wirklich nur ein bisschen schneller ist, w?re ich daf?r, dass bei $i++
+zulassen. Ich bin das von Java und so einfach gew?hnt.
+>
+> Speedm??ig ist auch noch die Verwendung von Kurzoperatoren anzuraten,
+> also $x .= $y; anstelle von $x = $x.$y; - das gleiche mit +=, -= usw.
+> Das ist schneller und macht den Code ?bersichtlicher.
+Das es schneller ist, kann sein. Aber ?bersichtlicher, dar?ber l?sst
+sich streiten...
+>
+> Besonders aus Speedgr?nden sollten Objekte als Referenzen erzeugt
+> werden, da sonst bei jedem Aufruf von $this das komplette Objekt kopiert
+> wird, was zu einen enormen Overhead f?hrt. Referenzen werden mit =&
+> angelegt.
+Das mit den Referenzen wusste ich nicht. Das muss auf jeden Fall
+ge?ndert werden.
+>
+> Bei den if() Konstrukten wo nur eine Anweisung hinter folgt k?nnen die
+> Blockklammern auch weggelassen werden. Das macht den Code wesendlich
+> ?bersichtlicher und man sollte diesen Luxus auch nutzen, denn in Perl
+> hat man den z.B. nicht, dort m?ssen {} gesetzt werden und der Code wird
+> unleserlich.
+Auch hierdr?ber l?sst sich streiten. Ich finde die { } extrem n?tzlich.
+>
+> Die Benennung von Variablen sollte von vorn herein durchdacht werden.
+> Warum hei?t z.B. eine Variable welche die MySQL Datenbank beinhaltet
+> $config['mysql_table'] und nicht $config['mysql_db'] o.?.?
+Ok, das ist ein Fehler der mir, bis Montag, nicht aufgefallen ist.
+Blase16 hat es wohl gemerkt, aber nichts gesagt.
+>
+>
+> Evt. sollte sich der ein oder andere nochmal das Ziel von OOP vor Augen
+> f?hren. Ich Versteh nicht warum z.B. in der Datei jforg_template.php in
+> den Zeilen 56 und 57 auf die Funktion str_replace() zugegriffen wird, wo
+> diese doch l?ngst in der Methode replace() der Klasse gekapselt wurde.
+> So wird der Code nur immer unwartbarer und das m?chte denke ich keiner
+> von uns :)
+Stimmt. Da hab ich einfach nicht nachgedacht.
+>
+> Was OOP angeht sollte sowieso nochmal alles ein wenig durchdacht werden.
+> Da ich bereits ziemlich viele MySQL Funktionsaufrufe und
+> Datumsfunktionsaufrufe gesehen habe denke ich das eine eigene MySQL bzw.
+> Datumsklasse doch schon viel Sinn hat. So l?sst sich beispielsweise in
+> der MySQL Klasse noch eine Methode implementieren, welche vor
+> SQL-injection Angriffen sch?tzt. Ich f?nde das viel viel ?bersichtlicher
+> und wesentlich besser gel?st als jedesmal auf die globalen Funktionen
+> erneut zuzugeifen.
+Eine SQL Klasse steht auf jedem Fall auf dem Plan. Allein aus dem Grund,
+das man bequem zu SQLite oder PostgreSQL wechseln kann. Mir ist selber
+schon aufgefallen, das ich in jeder Klasse eine neue Verbindung aufbaue,
+was ja total sinnlos ist.
+>
+> Die Ordnerf?hrung ist meines Erachtens auch ein wenig irref?hrend: Warum
+> gibt es den Ordner Design welcher nur das Template enth?lt und nochmal
+> extra den Ordner GFX. Hat GFX nix mit Design zu tun? Ich f?nde GFX in
+> Design besser aufgehoben. Generell bin ich der Ansicht dass das Design
+> noch nicht optimal vom Code getrennt ist. Wenn jemand von euch mal z.B.
+> mit Smarty als Templateengine gearbeitet hat weis er genau was ich
+> meine. Ich denke dass dieser Punkt nochmals genau durchdacht werden
+> sollte, auch wenn dadurch bis jetzt geschriebene Klassen evt. verworfen
+> werden m?ssen ist es doch ein Entscheidener Punkt. Das gleiche gilt f?r
+> die Modularisierung der Texte vom Rest der Seite. So lassen sich die
+> Texte besser verwalten. Ich schlage hier anstelle einer DB-Tabelle ein
+> XML-File vor, da dieses f?r solche Aufgaben wesentlich flexiebler ist.
+> Das Linkmanagement sollte auch nochmal ?berholt werden, so dass keine
+> festen Linkadressen im Code konstant hinterlegt werden, dies hat auch
+> eine bessere Wartbarkeit zur Folge.
+Der Ordner GFX wird wohl bald gel?scht, bisher ist da eh nur der Header
+drin.
+Was du jetzt mit den Texten meinst, versteh ich nicht. Jeder l?ngere
+Satz kommt aus der Datenbank...
+>
+> Was ich Ordnerf?hrungstechnisch auch noch nicht so 100% perfekt finde
+> ist die Tatsache, dass in dem Ordner classes nicht nur Klassen sondern
+> auch globale Funktionen liegen. Dies sollte evt. auch nochmal ?berdacht
+> werden.
+Als ich da Datei da rein gelegt habe, hatte ich keine Lust, f?r eine
+Funktion einen extra Ordner anzulegen. Das sollten wir in Zukunft besser
+machen.
+>
+> Dann noch ein letzter Punkt der noch konkret die GUI betrifft: Ich f?nde
+> es besser wenn der User die M?glichkeit hat seinen PGP-Key mittels eines
+> Dateiuploads hochzuladen. Das ist etwas Userfreundlicher.
+Kann man sicher machen. Aber das sind doch Feinheiten, zum Programmieren
+ist das Textfeld auf jeden Fall leichter zu handhaben.
+>
+>
+> So, ich hoffe ihr versteht meine Kritikpunkte, - was haltet ihr von
+> meinen Vorschl?gen?
+Versteh das jetzt bitte nicht flasch. Blase16 und ich sind jetzt schon
+ewig mit der Seite besch?ftigt, und wollen endlich eine 0.1 beta fertig
+haben, um etwas f?r die ?ffentlichkeit zu haben. Zudem k?nnen wir die
+Autoren (f?r's wiki) erst besch?ftigen, wenn das wiki fertig ist.
+Wenn wir bald zu dritt sind, ist das ganz nat?rlich ein bisschen
+entspannter. Wenn es dir recht w?re, w?rden wir die gro?en ?nderungen
+erst machen, wenn 0.1 fertig ist. Den Code noch mal durchzugehen, und
+das Ein oder Andere anzupassen ist nat?rlich nicht falsch.
+>
+> MFG Zwerg
+Wenn wir zusammen arbeiten, sollten wir uns beim Vornamen ansprechen. -
+Wenn du nichts dagegen hast.
+
+Ich bin der Daniel
+
+Gru? Daniel
+_______________________________________________
+Jabberfriends-developer mailing list
+Jabberfriends-developer at lists.berlios.de
+http://lists.berlios.de/mailman/listinfo/jabberfriends-developer
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+
+iD8DBQFEa3ljk7+UCPW7+jARAvp9AKCg2EIM6H/xBK8SYyNxTaDFbL38qwCfYAb8
+XClDqC7QAaF32/8WL+DZVms=
+=Of8f
+-----END PGP SIGNATURE-----
+
+
+From daniel at gultsch.de  Wed May 17 22:02:27 2006
+From: daniel at gultsch.de (Daniel Gultsch)
+Date: Wed, 17 May 2006 22:02:27 +0200
+Subject: [Jabberfriends-developer] Meine =?ISO-8859-15?Q?Verbesserung?=
+ =?ISO-8859-15?Q?svorschl=E4ge?=
+In-Reply-To: <446B6508.1070501@googlemail.com>
+References: <446B5555.2050700@googlemail.com> <446B6072.5090405@gultsch.de> <446B6508.1070501@googlemail.com>
+Message-ID: <446B8153.9090804@gultsch.de>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Tach,
+
+ich habe zwar im Moment kaum zeit (Schule l?sst gr??en), dennoch m?chte
+ich die ?nderungen selber durchf?hren. Dadurch lerne ich am Meisten.
+Wir k?nnen ja mal einen Thread aufmachen, in dem wir Coding Richtlinien
+diskutieren.
+Im Juni habe ich wieder vern?nftig Zeit - aber wahrscheinlich kommen
+vorher schon ein paar Verbesserungen.
+
+Ausserdem br?uchtest du mal einen aktuellen SQL-Dumb - Bachtijar kannst
+du sowas mal hochladen?
+
+Gru? Daniel
+
+Falco Vennedey schrieb:
+> Ach, sorry ich bin ein Blindfisch! :D
+> 
+> Ich habe deine Kommentare zu meinen Punkten gar nicht gesehen ;)
+> 
+> Mag sein dass es f?rs erste etwas l?stig erscheinen mag das alles
+> nochmal verbessert zu schreiben, aber ich kann aus eigener Erfahrung
+> sagen dass es sinnvoller ist das Projekt von vorn herein sauber
+> durchzuziehen. Ob die erste Alpha nun in 2 Wochen oder in 6
+> herausgebracht wird ist unerheblich meines erachtens: uns hezt keiner.
+> 
+> Wenn es einmal ordentlich l?uft kann auch schnell und viel erweitert
+> werden - das ist meine Ansicht, aber ich verstehe auch deinen Standpunkt
+> dass du endlich mal Ergebnisse sehen m?chtest - Ich bin da mehr nach dem
+> Motto "Quallit?t statt Quantit?t" - das solltest du evt. nochmal
+> ?berdenken :)
+> 
+> Sorry nochmal wegen meiner Blindheit :D
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+
+iD8DBQFEa4FTk7+UCPW7+jARAoysAJ9F9gAI5Ff0YNqSknoVe8caBNSoXACfUmnJ
+yNMxK3RgElYNQ2qzop1VkN8=
+=VPpo
+-----END PGP SIGNATURE-----
+
+
+From daniel at gultsch.de  Wed May 17 22:15:22 2006
+From: daniel at gultsch.de (Daniel Gultsch)
+Date: Wed, 17 May 2006 22:15:22 +0200
+Subject: [Jabberfriends-developer] Coding Richtlinien
+Message-ID: <446B845A.1020004@gultsch.de>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+N'Abend
+ich fange mal an, Coding Richtlinien aufzustellen
+
+Ich wei?, dar?ber l?sst sich immer Streiten, aber wir versuchen mal,
+etwas zu finden, was jedem gef?llt.
+
+* Einger?ckt wird mit 4 Leerzeichen.
+* die geschweiften Klammern stehen immer in der gleichen Zeile. Die
+geschlossene Klammer steht in einer neuen Zeile. Else dahinter. Siehe
+Beispiel.
+if (a==b) {
+    echo 'Test';
+} else {
+    echo 'Test2';
+}
+* Es werden normale Anf?hrungszeichen verwendet. Keine Doppelten.
+* register_globals = Off, magic_quotes = Off
+* Auf Anregung von Falco error_reporting=E_ALL
+* <?php sollte klar sein. Bei einzeiligen Befehlen echo, die oder so
+kann auch mal <? ?> verwendet werden
+* Kommentare, jede Methode sollte kurz beschrieben werden, was sie
+macht, was sie erwartet. Es muss nicht jede Zeile Kommentiert werden. An
+sonsten nach pers?nlichem Ermessen.
+
+Das war's von mir erst mal. Wem sonst noch was einf?llt...
+
+Gru? Daniel
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+
+iD8DBQFEa4Rak7+UCPW7+jARAm3nAJ0TFPNJp4ySoC6iNsldh/rQSCrw5QCcDdVp
+IHUL1bo5eTJwXLqVG4e/KlI=
+=G62K
+-----END PGP SIGNATURE-----
+
+
+From daniel at gultsch.de  Thu May 18 08:29:01 2006
+From: daniel at gultsch.de (Daniel Gultsch)
+Date: Thu, 18 May 2006 08:29:01 +0200
+Subject: [Jabberfriends-developer] Coding Richtlinien
+In-Reply-To: <1147904253.10229.27.camel@st004>
+References: <446B845A.1020004@gultsch.de> <1147904253.10229.27.camel@st004>
+Message-ID: <446C142D.4020508@gultsch.de>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Morgen
+
+achtet bitte alle darauf, das ihr der Mailingliste =>
+jabberfriends-developer at lists.berlios.de antwortet, nicht mir. Es sei
+denn, es ist so gewollt. Warum da kein ReplyTo im Header ist wei? ich
+auch nicht.
+
+GPL2: da gibt es nichts mehr gro? zu diskutieren. Wir haben so
+angefangen, und das bleibt auch so.
+Die Inhalte, Texte im Wiki und so weiter stehen unter Creative Commons,
+mit der Auflage der Namensnennung und dem Verbot der kommerziellen
+Nutzung. ?nderungen sind nat?rlich erlaubt => Wiki.
+
+Ich denke nicht, das ihn jeder Datei der Hinweis auf GPL sein soll.
+Ausserdem w?re ich daf?r, einen extra Ordner anzulegen, inden wir
+README, LICENSE und so weiter kopieren. Dieser Ordner kann beim
+hochladen dann bequem weggelassen werden.
+
+Gru? Daniel
+
+Bahtiar @lias Blase16 schrieb:
+> On Wed, 2006-05-17 at 22:15 +0200, Daniel Gultsch wrote:
+> 
+>> N'Abend
+>> ich fange mal an, Coding Richtlinien aufzustellen
+>>
+>> Ich wei?, dar?ber l?sst sich immer Streiten, aber wir versuchen mal,
+>> etwas zu finden, was jedem gef?llt.
+>>
+>> * Einger?ckt wird mit 4 Leerzeichen.
+>> * die geschweiften Klammern stehen immer in der gleichen Zeile. Die
+>> geschlossene Klammer steht in einer neuen Zeile. Else dahinter. Siehe
+>> Beispiel.
+>> if (a==b) {
+>>     echo 'Test';
+>> } else {
+>>     echo 'Test2';
+>> }
+>> * Es werden normale Anf?hrungszeichen verwendet. Keine Doppelten.
+>> * register_globals = Off, magic_quotes = Off
+>> * Auf Anregung von Falco error_reporting=E_ALL
+>> * <?php sollte klar sein. Bei einzeiligen Befehlen echo, die oder so
+>> kann auch mal <? ?> verwendet werden
+>> * Kommentare, jede Methode sollte kurz beschrieben werden, was sie
+>> macht, was sie erwartet. Es muss nicht jede Zeile Kommentiert werden. An
+>> sonsten nach pers?nlichem Ermessen.
+>>
+>> Das war's von mir erst mal. Wem sonst noch was einf?llt...
+>>
+>> Gru? Daniel
+> 
+> Tach,
+> 
+> also ich sehe die oberen Vorschlaege auch als sinnvoll an. Ich wuerde
+> aber vorschlagen auch um einzeilige if Bedingungen, Klammern zu machen,
+> f?r bessere Uebersicht. 
+> 
+> Habe nur einige Fragen bezueglich der GPL. Wir wollten doch die Sourcen
+> unter die GPL stellen, welche GPL nehmen wir 2 oder any higher? Ich
+> waere f?r die 2, da any higher eine Katze im Sack ist, meiner Meinung
+> nach. Fuegen wir den GPLHeader, bei jeder Klasse oder Datei, so wie ich
+> bei der jforg_tags gemacht habe oben ein?
+> 
+>> Wenn wir zusammen arbeiten, sollten wir uns beim Vornamen ansprechen. 
+>> Wenn du nichts dagegen hast.
+> 
+> @ Mein Name ist Bahtiar oder Blase16 oder einfach Blase, so wie es einem
+> gefaellt. 
+> Gru?
+> 
+> Bahtiar @lias Blase16
+> 
+> 
+> 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+
+iD8DBQFEbBQtk7+UCPW7+jARAjbIAJ9K1YTdqNjKqYuA18gnprzqw5CUdACdE1pY
+RY3fnU21J0BunUIAsSIepKI=
+=isGf
+-----END PGP SIGNATURE-----
+
+
+From mastergnome at googlemail.com  Thu May 18 16:59:52 2006
+From: mastergnome at googlemail.com (Falco Vennedey)
+Date: Thu, 18 May 2006 16:59:52 +0200
+Subject: [Jabberfriends-developer] Re: Jabberfriends-developer digest, Vol 1 #2 - 7 msgs
+In-Reply-To: <20060518100017.653.35626.Mailman@bat.berlios.de>
+References: <20060518100017.653.35626.Mailman@bat.berlios.de>
+Message-ID: <446C8BE8.9080301@googlemail.com>
+
+Ich kann gerne mal die Codingrichtlinien in ein HTML Dokument sauber
+zusammenfassen, so dass auch neulinge sofort sehen was Sache ist.
+Ich habe noch ne eigene TemplateEngine die wir evt. verwenden k?nnten.
+M?sste nur von PHP5 auf PHP4 gebracht werden. Die ist recht gut, bin ich
+der Ansicht, die l?sst sich benutzen. Dann m?chte ich mich um die MySQL
+Klasse k?mmern, wenns recht ist.
+
+

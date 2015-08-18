@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Jabberfriends-developer] Meine Verbesserungsvorschl&#228;ge
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/jabberfriends-developer/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:jabberfriends-developer%40lists.berlios.de?Subject=Re%3A%20%5BJabberfriends-developer%5D%20Meine%20%3D%3FISO-8859-15%3FQ%3FVerbesserungsvorschl%3DE4ge%3F%3D&In-Reply-To=%3C446B5555.2050700%40googlemail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000000.html">
+   <LINK REL="Next"  HREF="000002.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Jabberfriends-developer] Meine Verbesserungsvorschl&#228;ge</H1>
+    <B>Falco Vennedey</B> 
+    <A HREF="mailto:jabberfriends-developer%40lists.berlios.de?Subject=Re%3A%20%5BJabberfriends-developer%5D%20Meine%20%3D%3FISO-8859-15%3FQ%3FVerbesserungsvorschl%3DE4ge%3F%3D&In-Reply-To=%3C446B5555.2050700%40googlemail.com%3E"
+       TITLE="[Jabberfriends-developer] Meine Verbesserungsvorschl&#228;ge">mastergnome at googlemail.com
+       </A><BR>
+    <I>Wed May 17 18:54:45 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000000.html">[Jabberfriends-developer] Mailingliste auf Deutsch
+</A></li>
+        <LI>Next message: <A HREF="000002.html">[Jabberfriends-developer] Meine Verbesserungsvorschl&#228;ge
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1">[ date ]</a>
+              <a href="thread.html#1">[ thread ]</a>
+              <a href="subject.html#1">[ subject ]</a>
+              <a href="author.html#1">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Hiho!
+
+Ich habe mal die Quellcodes ein wenig &#252;berflogen. Mir sind da so ein
+paar Dinge aufgefallen die evt. besser gemacht werden k&#246;nnten. Versteht
+das bitte nicht falsch, ich m&#246;chte hier nicht als Besserwisser auftreten
+oder sagen das hier jemand schlecht programmiert - ich m&#246;chte nur dass
+das Projekt von anfang an sauber durchgezogen wird und hinterher alle
+weniger Arbeit bei der Wartung haben.
+
+Meine Verbesserungsvorschl&#228;ge
+=============================
+
+Ich bin der Meinung dass man gerade in einer so Fehlertr&#228;chtigen Sprache
+wie PHP alles tun sollte um Fehler aufzudecken. Daher bin ich daf&#252;r dass
+alle mit der Einstellung error_reporting=E_ALL hacken sollten. Was mir
+beispielsweise beim &#220;berfliegen des Quelltextes der Datei
+&quot;changedetails.php&quot; aufgefallen ist, das z.B. in Zeile 30 aus $birthday
+pl&#246;tzlich $birtday wird - sowas muss auch getestet werden um Fehler
+aufzudecken.
+
+Was mich erst stark ins Stuzen gebracht hat war folgende Zeile (Z. 15 in
+wiki.php): $id = $id + 0;
+Ich denke mal dass damit eine Typenumwandlung von String zu int erfolgen
+sollte. PHP bietet daf&#252;r doch extra Funktionen an um so etwas
+durchzuziehen. Eine gute M&#246;glichkeit ist z.B.: $id =
+intval(ereg_replace('[^0-9]','',$_GET['id']));
+Ich denke das dies wesentlich besser ist als etwas mit 0 zu addieren :D
+
+Was mir auch ziemlich schnell ins Auge fiel ist dass ihr um Teile von
+Strings zu ermitteln den Verkettungsoperator . mit den jeweiligen
+Indizes des Strings einsetzt. Ich versteh das nicht so ganz weil der
+Funktionsumfang von PHP extra die Funktion substr() f&#252;r so etwas hat.
+Ich w&#252;rde euch ans Herz legen diese Funktion zu benutzen.
+
+Des weiteren wurden mal &quot;Doppelte Anf&#252;hrungszeichen&quot; und mal 'Einfache
+Anf&#252;hrungszeichen' benutzt. Ich denke dass wir und auf eine Form einigen
+und diese konsequent durchziehen sollten. Ich pers&#246;nlich w&#252;rde die
+Einfachen bevorzugen, da diese performanter und durchsichtiger sind was
+die intigration von Variablen angeht.
+
+Wenn gepr&#252;ft wird ob eine Variable leer ist wird von euch das Konstrukt
+if($x==&quot;&quot;) verwendet. Das ist unpraktisch und langsam. PHP stellt daf&#252;r
+die Funktion empty() zur Verf&#252;gung welche ich euch auch ans Herz legen
+m&#246;chte.
+
+Eine Kleinigkeit, aus der aber bei vielen Schleifen sehr schnell zu
+Performanceeinbu&#223;en f&#252;hren kann: Ihr benutzt Postinkrement-, bzw.
+Postdekrementoperatorn ($i++, $i--). Der Preinkrement, bzw.
+Predekrementoperator (++$i, --$i) ist aber ein wenig schneller - zwar
+nur wenig aber schneller :-)
+
+Speedm&#228;&#223;ig ist auch noch die Verwendung von Kurzoperatoren anzuraten,
+also $x .= $y; anstelle von $x = $x.$y; - das gleiche mit +=, -= usw.
+Das ist schneller und macht den Code &#252;bersichtlicher.
+
+Besonders aus Speedgr&#252;nden sollten Objekte als Referenzen erzeugt
+werden, da sonst bei jedem Aufruf von $this das komplette Objekt kopiert
+wird, was zu einen enormen Overhead f&#252;hrt. Referenzen werden mit =&amp;
+angelegt.
+
+Bei den if() Konstrukten wo nur eine Anweisung hinter folgt k&#246;nnen die
+Blockklammern auch weggelassen werden. Das macht den Code wesendlich
+&#252;bersichtlicher und man sollte diesen Luxus auch nutzen, denn in Perl
+hat man den z.B. nicht, dort m&#252;ssen {} gesetzt werden und der Code wird
+unleserlich.
+
+Die Benennung von Variablen sollte von vorn herein durchdacht werden.
+Warum hei&#223;t z.B. eine Variable welche die MySQL Datenbank beinhaltet
+$config['mysql_table'] und nicht $config['mysql_db'] o.&#228;.?
+
+
+Evt. sollte sich der ein oder andere nochmal das Ziel von OOP vor Augen
+f&#252;hren. Ich Versteh nicht warum z.B. in der Datei jforg_template.php in
+den Zeilen 56 und 57 auf die Funktion str_replace() zugegriffen wird, wo
+diese doch l&#228;ngst in der Methode replace() der Klasse gekapselt wurde.
+So wird der Code nur immer unwartbarer und das m&#246;chte denke ich keiner
+von uns :)
+
+Was OOP angeht sollte sowieso nochmal alles ein wenig durchdacht werden.
+Da ich bereits ziemlich viele MySQL Funktionsaufrufe und
+Datumsfunktionsaufrufe gesehen habe denke ich das eine eigene MySQL bzw.
+Datumsklasse doch schon viel Sinn hat. So l&#228;sst sich beispielsweise in
+der MySQL Klasse noch eine Methode implementieren, welche vor
+SQL-injection Angriffen sch&#252;tzt. Ich f&#228;nde das viel viel &#252;bersichtlicher
+und wesentlich besser gel&#246;st als jedesmal auf die globalen Funktionen
+erneut zuzugeifen.
+
+Die Ordnerf&#252;hrung ist meines Erachtens auch ein wenig irref&#252;hrend: Warum
+gibt es den Ordner Design welcher nur das Template enth&#228;lt und nochmal
+extra den Ordner GFX. Hat GFX nix mit Design zu tun? Ich f&#228;nde GFX in
+Design besser aufgehoben. Generell bin ich der Ansicht dass das Design
+noch nicht optimal vom Code getrennt ist. Wenn jemand von euch mal z.B.
+mit Smarty als Templateengine gearbeitet hat weis er genau was ich
+meine. Ich denke dass dieser Punkt nochmals genau durchdacht werden
+sollte, auch wenn dadurch bis jetzt geschriebene Klassen evt. verworfen
+werden m&#252;ssen ist es doch ein Entscheidener Punkt. Das gleiche gilt f&#252;r
+die Modularisierung der Texte vom Rest der Seite. So lassen sich die
+Texte besser verwalten. Ich schlage hier anstelle einer DB-Tabelle ein
+XML-File vor, da dieses f&#252;r solche Aufgaben wesentlich flexiebler ist.
+Das Linkmanagement sollte auch nochmal &#252;berholt werden, so dass keine
+festen Linkadressen im Code konstant hinterlegt werden, dies hat auch
+eine bessere Wartbarkeit zur Folge.
+
+Was ich Ordnerf&#252;hrungstechnisch auch noch nicht so 100% perfekt finde
+ist die Tatsache, dass in dem Ordner classes nicht nur Klassen sondern
+auch globale Funktionen liegen. Dies sollte evt. auch nochmal &#252;berdacht
+werden.
+
+Dann noch ein letzter Punkt der noch konkret die GUI betrifft: Ich f&#228;nde
+es besser wenn der User die M&#246;glichkeit hat seinen PGP-Key mittels eines
+Dateiuploads hochzuladen. Das ist etwas Userfreundlicher.
+
+
+So, ich hoffe ihr versteht meine Kritikpunkte, - was haltet ihr von
+meinen Vorschl&#228;gen?
+
+MFG Zwerg
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - <A HREF="http://enigmail.mozdev.org">http://enigmail.mozdev.org</A>
+
+iD8DBQFEa1VVPnKv6Cf+e6ARAt7RAKDOK5D9CZQzClqVRhvjVxFKvOC2vACguxkM
+0gAV5lPar2bFo5CGNDaBOnk=
+=vnxq
+-----END PGP SIGNATURE-----
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000000.html">[Jabberfriends-developer] Mailingliste auf Deutsch
+</A></li>
+	<LI>Next message: <A HREF="000002.html">[Jabberfriends-developer] Meine Verbesserungsvorschl&#228;ge
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1">[ date ]</a>
+              <a href="thread.html#1">[ thread ]</a>
+              <a href="subject.html#1">[ subject ]</a>
+              <a href="author.html#1">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/jabberfriends-developer">More information about the Jabberfriends-developer
+mailing list</a><br>
+</body></html>

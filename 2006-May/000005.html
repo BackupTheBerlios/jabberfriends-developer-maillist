@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Jabberfriends-developer] Coding Richtlinien
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/jabberfriends-developer/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:jabberfriends-developer%40lists.berlios.de?Subject=Re%3A%20%5BJabberfriends-developer%5D%20Coding%20Richtlinien&In-Reply-To=%3C446C142D.4020508%40gultsch.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000004.html">
+   <LINK REL="Next"  HREF="000006.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Jabberfriends-developer] Coding Richtlinien</H1>
+    <B>Daniel Gultsch</B> 
+    <A HREF="mailto:jabberfriends-developer%40lists.berlios.de?Subject=Re%3A%20%5BJabberfriends-developer%5D%20Coding%20Richtlinien&In-Reply-To=%3C446C142D.4020508%40gultsch.de%3E"
+       TITLE="[Jabberfriends-developer] Coding Richtlinien">daniel at gultsch.de
+       </A><BR>
+    <I>Thu May 18 08:29:01 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000004.html">[Jabberfriends-developer] Coding Richtlinien
+</A></li>
+        <LI>Next message: <A HREF="000006.html">[Jabberfriends-developer] Re: Jabberfriends-developer digest, Vol 1 #2 - 7 msgs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5">[ date ]</a>
+              <a href="thread.html#5">[ thread ]</a>
+              <a href="subject.html#5">[ subject ]</a>
+              <a href="author.html#5">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Morgen
+
+achtet bitte alle darauf, das ihr der Mailingliste =&gt;
+<A HREF="https://lists.berlios.de/mailman/listinfo/jabberfriends-developer">jabberfriends-developer at lists.berlios.de</A> antwortet, nicht mir. Es sei
+denn, es ist so gewollt. Warum da kein ReplyTo im Header ist wei&#223; ich
+auch nicht.
+
+GPL2: da gibt es nichts mehr gro&#223; zu diskutieren. Wir haben so
+angefangen, und das bleibt auch so.
+Die Inhalte, Texte im Wiki und so weiter stehen unter Creative Commons,
+mit der Auflage der Namensnennung und dem Verbot der kommerziellen
+Nutzung. &#196;nderungen sind nat&#252;rlich erlaubt =&gt; Wiki.
+
+Ich denke nicht, das ihn jeder Datei der Hinweis auf GPL sein soll.
+Ausserdem w&#228;re ich daf&#252;r, einen extra Ordner anzulegen, inden wir
+README, LICENSE und so weiter kopieren. Dieser Ordner kann beim
+hochladen dann bequem weggelassen werden.
+
+Gru&#223; Daniel
+
+Bahtiar @lias Blase16 schrieb:
+&gt;<i> On Wed, 2006-05-17 at 22:15 +0200, Daniel Gultsch wrote:
+</I>&gt;<i> 
+</I>&gt;&gt;<i> N'Abend
+</I>&gt;&gt;<i> ich fange mal an, Coding Richtlinien aufzustellen
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Ich wei&#223;, dar&#252;ber l&#228;sst sich immer Streiten, aber wir versuchen mal,
+</I>&gt;&gt;<i> etwas zu finden, was jedem gef&#228;llt.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> * Einger&#252;ckt wird mit 4 Leerzeichen.
+</I>&gt;&gt;<i> * die geschweiften Klammern stehen immer in der gleichen Zeile. Die
+</I>&gt;&gt;<i> geschlossene Klammer steht in einer neuen Zeile. Else dahinter. Siehe
+</I>&gt;&gt;<i> Beispiel.
+</I>&gt;&gt;<i> if (a==b) {
+</I>&gt;&gt;<i>     echo 'Test';
+</I>&gt;&gt;<i> } else {
+</I>&gt;&gt;<i>     echo 'Test2';
+</I>&gt;&gt;<i> }
+</I>&gt;&gt;<i> * Es werden normale Anf&#252;hrungszeichen verwendet. Keine Doppelten.
+</I>&gt;&gt;<i> * register_globals = Off, magic_quotes = Off
+</I>&gt;&gt;<i> * Auf Anregung von Falco error_reporting=E_ALL
+</I>&gt;&gt;<i> * &lt;?php sollte klar sein. Bei einzeiligen Befehlen echo, die oder so
+</I>&gt;&gt;<i> kann auch mal &lt;? ?&gt; verwendet werden
+</I>&gt;&gt;<i> * Kommentare, jede Methode sollte kurz beschrieben werden, was sie
+</I>&gt;&gt;<i> macht, was sie erwartet. Es muss nicht jede Zeile Kommentiert werden. An
+</I>&gt;&gt;<i> sonsten nach pers&#246;nlichem Ermessen.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Das war's von mir erst mal. Wem sonst noch was einf&#228;llt...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Gru&#223; Daniel
+</I>&gt;<i> 
+</I>&gt;<i> Tach,
+</I>&gt;<i> 
+</I>&gt;<i> also ich sehe die oberen Vorschlaege auch als sinnvoll an. Ich wuerde
+</I>&gt;<i> aber vorschlagen auch um einzeilige if Bedingungen, Klammern zu machen,
+</I>&gt;<i> f&#252;r bessere Uebersicht. 
+</I>&gt;<i> 
+</I>&gt;<i> Habe nur einige Fragen bezueglich der GPL. Wir wollten doch die Sourcen
+</I>&gt;<i> unter die GPL stellen, welche GPL nehmen wir 2 oder any higher? Ich
+</I>&gt;<i> waere f&#252;r die 2, da any higher eine Katze im Sack ist, meiner Meinung
+</I>&gt;<i> nach. Fuegen wir den GPLHeader, bei jeder Klasse oder Datei, so wie ich
+</I>&gt;<i> bei der jforg_tags gemacht habe oben ein?
+</I>&gt;<i> 
+</I>&gt;&gt;<i> Wenn wir zusammen arbeiten, sollten wir uns beim Vornamen ansprechen. 
+</I>&gt;&gt;<i> Wenn du nichts dagegen hast.
+</I>&gt;<i> 
+</I>&gt;<i> @ Mein Name ist Bahtiar oder Blase16 oder einfach Blase, so wie es einem
+</I>&gt;<i> gefaellt. 
+</I>&gt;<i> Gru&#223;
+</I>&gt;<i> 
+</I>&gt;<i> Bahtiar @lias Blase16
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - <A HREF="http://enigmail.mozdev.org">http://enigmail.mozdev.org</A>
+
+iD8DBQFEbBQtk7+UCPW7+jARAjbIAJ9K1YTdqNjKqYuA18gnprzqw5CUdACdE1pY
+RY3fnU21J0BunUIAsSIepKI=
+=isGf
+-----END PGP SIGNATURE-----
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000004.html">[Jabberfriends-developer] Coding Richtlinien
+</A></li>
+	<LI>Next message: <A HREF="000006.html">[Jabberfriends-developer] Re: Jabberfriends-developer digest, Vol 1 #2 - 7 msgs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5">[ date ]</a>
+              <a href="thread.html#5">[ thread ]</a>
+              <a href="subject.html#5">[ subject ]</a>
+              <a href="author.html#5">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/jabberfriends-developer">More information about the Jabberfriends-developer
+mailing list</a><br>
+</body></html>
